@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediSafe BD - স্বাস্থ্য সুরক্ষা সিস্টেম</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f4f8f8;color:#18332d}
+.warning{background:#d52626;color:white;text-align:center;padding:9px;font-size:14px}
+header{background:#292b2d;padding:15px 5%;display:flex;align-items:center;gap:35px;flex-wrap:wrap}
+.logo{color:#168066;font-size:23px;font-weight:bold}
+nav{display:flex;gap:10px;flex-wrap:wrap}
+nav button{background:#292b2d;color:white;border:2px solid #73787a;border-radius:20px;padding:10px 22px;cursor:pointer;font-weight:bold}
+nav button:hover{background:#145c4c}
+.container{width:90%;max-width:1050px;margin:auto;padding:25px 0 60px}
+.ai-box{background:linear-gradient(100deg,#075941,#126850);color:white;padding:22px;border-radius:18px;margin-bottom:20px}
+.ai-box h2{margin-bottom:8px}.ai-box p{font-size:14px;margin-bottom:15px}
+.ai-search{display:flex;gap:10px}.ai-search input{flex:1;padding:13px;border:none;border-radius:9px}
+.red-btn{background:#dc3030;color:white;border:none;padding:12px 20px;border-radius:9px;font-weight:bold;cursor:pointer}
+.title{text-align:center;margin:20px 0 25px}.title h1{color:#145e4d;font-size:32px}.title p{color:#74848a;margin-top:7px}
+.portal-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.portal{background:white;padding:22px;border-radius:17px;box-shadow:0 4px 18px rgba(0,0,0,.10)}
+.doctor{border-top:5px solid #23885f}.patient{border-top:5px solid #2779c8}
+.portal h2{margin-bottom:15px}.portal p{color:#66767b;line-height:1.7;margin-bottom:18px}
+.green-btn,.blue-btn{border:none;padding:12px 17px;border-radius:8px;font-weight:bold;cursor:pointer}
+.green-btn{background:#087458;color:white}.blue-btn{background:#dcecf7;color:#1e557b}
+.section-title{text-align:center;color:#145e4d;margin:35px 0 5px}
+.section-subtitle{text-align:center;color:#77858a;margin-bottom:20px}
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.service{background:white;padding:20px;border-radius:17px;box-shadow:0 3px 15px rgba(0,0,0,.08)}
+.service h3{margin-bottom:10px}.service p{color:#748187;line-height:1.6}
+.service button{margin-top:15px;padding:10px 15px;border:none;border-radius:8px;background:#e8f0f2;font-weight:bold;cursor:pointer}
+.emergency{margin-top:22px;background:linear-gradient(100deg,#d52323,#ffad26,#1975bd);color:white;padding:20px;border-radius:18px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.emergency button{background:white;border:none;padding:12px 18px;border-radius:9px;font-weight:bold;cursor:pointer}
+footer{background:#07503d;color:white;text-align:center;padding:28px}
+footer small{display:block;margin-top:8px}
+@media(max-width:750px){
+.portal-grid{grid-template-columns:1fr}.service-grid{grid-template-columns:1fr}.emergency{display:block}
+.emergency button{margin-top:12px}.ai-search{display:block}.ai-search button{margin-top:8px;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="warning">⚠️ Antibiotic নিজে থেকে শুরু করবেন না — প্রয়োজন হলে নিবন্ধিত চিকিৎসকের পরামর্শ নিন।</div>
+<header>
+<div class="logo">🛡️ MediSafe BD</div>
+<nav>
+<button onclick="home()">হোম</button>
+<button onclick="doctorLogin()">ডাক্তার</button>
+<button onclick="patientLogin()">রোগী</button>
+<button onclick="doctorSearch()">ডাক্তার খুঁজুন</button>
+<button onclick="healthInfo()">স্বাস্থ্য তথ্য ▼</button>
+<button onclick="hospitalSearch()">আমাদের সেবা</button>
+</nav>
+</header>
+<div class="container">
+<div class="ai-box">
+<h2>🤖 AI — যেকোনো কিছু জিজ্ঞাসা করুন</h2>
+<p>আপনার স্বাস্থ্য-সম্পর্কিত প্রশ্ন দিন। AI সাধারণ তথ্য, সম্ভাব্য specialist-এর দিকে যাওয়ার ইঙ্গিত এবং warning sign সম্পর্কে প্রাথমিক guidance দেখাবে।</p>
+<div class="ai-search">
+<input id="aiQuestion" placeholder="যেমন: চোখ ঝাপসা দেখলে কোন ডাক্তার দেখাবো?">
+<button class="red-btn" onclick="askAI()">জিজ্ঞাসা করুন</button>
+</div>
+<p id="aiAnswer"></p>
+</div>
+<div class="title">
+<h1>স্বাস্থ্য সুরক্ষা সিস্টেম</h1>
+<p>MediSafe BD — রোগী, ডাক্তার, রক্তদাতা, হাসপাতাল ও স্বাস্থ্যসেবার তথ্য এক জায়গায়</p>
+</div>
+<div class="portal-grid">
+<div class="portal doctor">
+<h2>👨‍⚕️ Doctor Portal</h2>
+<p>Verified doctor ID দিয়ে patient record, patient-এর বাসায় থেকে লেখা concern, medical information ও prescription workflow দেখা যাবে।</p>
+<button class="green-btn" onclick="doctorLogin()">🔐 Doctor Login</button>
+<button class="blue-btn" onclick="doctorRegister()">＋ Doctor Registration</button>
+</div>
+<div class="portal patient">
+<h2>👤 Patient Portal</h2>
+<p>Patient Login করে নিজের health dashboard-এর তথ্য দেখতে, symptoms ও গুরুত্বপূর্ণ কথা লিখে রাখতে পারবেন।</p>
+<button class="green-btn" onclick="patientLogin()">🔐 Patient Login</button>
+<button class="blue-btn" onclick="patientRegister()">＋ Patient Registration</button>
+</div>
+</div>
+<h2 class="section-title">আজ আপনার কী প্রয়োজন?</h2>
+<p class="section-subtitle">ওয়েবসাইট থেকেই দ্রুত প্রয়োজনীয় স্বাস্থ্যসেবা খুঁজে নিন</p>
+<div class="service-grid">
+<div class="service"><h3>🩸 Live Blood Donor খুঁজুন</h3><p>রক্তের গ্রুপ ও location দিয়ে available donor খুঁজুন এবং এক জায়গা থেকে রক্তদাতা নির্বাচন করুন।</p><button onclick="bloodDonor()">Donor খুঁজুন</button></div>
+<div class="service"><h3>💉 ফ্রি টিকা কোথায়?</h3><p>এলাকা অনুযায়ী free vaccination centre, campaign ও vaccination information দেখা যাবে।</p><button onclick="healthInfo()">তথ্য দেখুন</button></div>
+<div class="service"><h3>🏥 হাসপাতাল ও সেবা খুঁজুন</h3><p>কোন হাসপাতালে কোন doctor, department, test, treatment বা procedure আছে তা খুঁজে পাওয়া যাবে।</p><button onclick="hospitalSearch()">খুঁজুন</button></div>
+</div>
+<div class="emergency">
+<div><h2>🚑 জরুরী অ্যাম্বুলেন্স খুঁজুন</h2><p>আপনার কাছাকাছি available ambulance ও জরুরি সেবার তথ্য দেখুন।</p></div>
+<button onclick="ambulance()">🚑 এখনই অ্যাম্বুলেন্স খুঁজুন</button>
+</div>
+</div>
+<footer>
+<strong>🛡️ MediSafe BD — স্বাস্থ্য সুরক্ষা সিস্টেম</strong>
+<small>Prototype • Patient Record • Doctor Portal • Blood Donor • Vaccination • Hospital Service Directory • AI Decision Support</small>
+</footer>
+<script>
+function home(){window.scrollTo({top:0,behavior:"smooth"});}
+function doctorLogin(){window.location.href="pages/doctor-login.html";}
+function patientLogin(){window.location.href="patient-login.html";}
+function doctorRegister(){alert("Doctor Registration module: verified BMDC registration will be required.");}
+function patientRegister(){alert("Patient Registration module: NID / Birth Registration / Temporary ID workflow will be connected.");}
+function askAI(){
+ const q=document.getElementById("aiQuestion").value.trim();
+ if(!q){alert("প্রথমে আপনার প্রশ্ন লিখুন।");return;}
+ document.getElementById("aiAnswer").innerHTML="<br><b>🤖 AI Demo:</b> আপনার সমস্যার ভিত্তিতে সম্ভাব্য specialist সম্পর্কে প্রাথমিক guidance দেওয়া যাবে। এটি diagnosis বা prescription নয়।";
+}
+function doctorSearch(){alert("🔎 Doctor Search Demo\n\nপরবর্তীতে Hospital + Specialty অনুযায়ী verified doctor database এখানে যুক্ত হবে।");}
+function hospitalSearch(){alert("🏥 Hospital & Service Search Demo\n\nপরবর্তীতে hospital, treatment, test, fee এবং availability database এখানে যুক্ত হবে।");}
+function bloodDonor(){alert("🩸 Blood Donor Demo\n\nপরবর্তীতে Blood Group + Location অনুযায়ী live donor search যুক্ত হবে।");}
+function ambulance(){alert("🚑 Ambulance Demo\n\nপরবর্তীতে location-based ambulance service যুক্ত হবে।");}
+function healthInfo(){alert("🏥 স্বাস্থ্য তথ্য\n\nসুস্থ থাকা\nশিশু স্বাস্থ্য\nগর্ভবতী ও প্রসুতি\nঅটিজম ও প্রতিবন্ধি\n\nএই বিভাগে text + video content যুক্ত হবে।");}
+</script>
+</body>
+</html>

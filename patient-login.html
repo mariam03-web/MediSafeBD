@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Patient Login - MediSafe BD</title><link rel="stylesheet" href="assets/style.css"></head><body class="auth-page">
+<header class="auth-header"><div class="brand">🛡️ MediSafe BD</div><a href="index.html">← Home</a></header>
+<div class="auth-wrap"><div class="auth-card"><h1>👤 Patient Portal Login</h1>
+<p class="note">Patient Portal-এর জন্য প্রথমে Patient Name ও Patient ID দিন। এরপর NID, Birth Registration অথবা Newborn Child-এর Temporary ID দিয়ে verification হবে। BMDC/Doctor ID এখানে ব্যবহার করা যাবে না।</p>
+<form id="patientLoginForm">
+<div class="step"><h3>Step 1 — Patient Identity</h3><div class="field"><label>Patient Name</label><input id="patientName" required></div><div class="field"><label>Patient ID</label><input id="patientId" placeholder="Example: MSBD-P-10001" required></div></div>
+<div class="step"><h3>Step 2 — Verification</h3><div class="field"><label>Verification Type</label><select id="verificationType"><option value="nid">NID</option><option value="birthRegistration">Birth Registration</option><option value="temporaryId">Temporary ID for Newborn Child</option></select></div><div class="field"><label>Verification Number</label><input id="verificationValue" required></div></div>
+<button class="btn" type="submit">🔐 Login to Patient Portal</button></form>
+</div></div><script src="js/app.js"></script></body></html>
