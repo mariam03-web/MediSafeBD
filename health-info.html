@@ -1,7 +1,86 @@
-function healthInfo(){
-
-    alert(
-    "🏥 স্বাস্থ্য তথ্য\n\nসুস্থ থাকা\nশিশু স্বাস্থ্য\nগর্ভবতী ও প্রসুতি\nঅটিজম ও প্রতিবন্ধি\n\nএই বিভাগে text + video content যুক্ত হবে।"
-    );
-
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediSafe BD - স্বাস্থ্য তথ্য</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f4f8f8;color:#18332d;line-height:1.7}
+.warning{background:#d52626;color:white;text-align:center;padding:9px;font-size:14px}
+header{background:#292b2d;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.logo{color:#168066;font-size:23px;font-weight:bold}
+.home-btn{background:#292b2d;color:white;border:2px solid #73787a;border-radius:20px;padding:10px 22px;cursor:pointer;font-weight:bold;text-decoration:none;display:inline-block}
+.home-btn:hover{background:#145c4c}
+.container{width:90%;max-width:1100px;margin:auto;padding:28px 0 60px}
+.hero{background:linear-gradient(100deg,#075941,#126850);color:white;padding:28px;border-radius:18px;margin-bottom:25px}
+.hero h1{margin-bottom:8px}.hero p{opacity:.95}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.tab{border:0;border-radius:12px;padding:15px 10px;background:white;box-shadow:0 3px 12px rgba(0,0,0,.08);cursor:pointer;font-weight:bold;color:#24564a}
+.tab.active{background:#087458;color:white}
+.panel{display:none}.panel.active{display:block}
+.section-title{color:#145e4d;margin-bottom:15px;font-size:27px}
+.card{background:white;border-radius:15px;padding:20px;margin-bottom:16px;box-shadow:0 3px 15px rgba(0,0,0,.08)}
+.card h3{color:#176b57;margin-bottom:8px}.card ul{padding-left:24px}.card li{margin:5px 0}
+.video{display:inline-block;margin-top:12px;background:#dcecf7;color:#1e557b;text-decoration:none;padding:10px 15px;border-radius:8px;font-weight:bold}
+.note{background:#fff7df;border-left:5px solid #e2a900;padding:14px;margin-top:15px;border-radius:8px}
+footer{background:#07503d;color:white;text-align:center;padding:28px}footer small{display:block;margin-top:8px}
+@media(max-width:750px){.tabs{grid-template-columns:1fr 1fr}.container{width:92%}}
+@media(max-width:480px){.tabs{grid-template-columns:1fr}.hero h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="warning">⚠️ স্বাস্থ্য তথ্য সাধারণ সচেতনতার জন্য। গুরুতর সমস্যা হলে নিবন্ধিত চিকিৎসকের পরামর্শ নিন।</div>
+<header><div class="logo">🛡️ MediSafe BD</div><a class="home-btn" href="index.html">← হোমে ফিরে যান</a></header>
+<div class="container">
+<div class="hero"><h1>🏥 স্বাস্থ্য তথ্য</h1><p>সুস্থ থাকা, শিশু স্বাস্থ্য, গর্ভবতী ও প্রসুতি এবং অটিজম ও প্রতিবন্ধিতা সম্পর্কে প্রয়োজনীয় তথ্য এক জায়গায়।</p></div>
+<div class="tabs">
+<button class="tab active" onclick="showTab('healthy',this)">🌿 সুস্থ থাকা</button>
+<button class="tab" onclick="showTab('child',this)">👶 শিশু স্বাস্থ্য</button>
+<button class="tab" onclick="showTab('pregnancy',this)">🤰 গর্ভবতী ও প্রসুতি</button>
+<button class="tab" onclick="showTab('autism',this)">🧩 অটিজম ও প্রতিবন্ধি</button>
+</div>
+<section id="healthy" class="panel active">
+<h2 class="section-title">🌿 সুস্থ থাকা</h2>
+<div class="card"><h3>🥗 সুষম খাবার</h3><p>প্রতিদিন বিভিন্ন ধরনের পুষ্টিকর খাবার খাওয়ার চেষ্টা করুন—শস্যজাত খাবার, ডাল/প্রোটিনের উৎস, শাকসবজি, ফল এবং পর্যাপ্ত পানি। অতিরিক্ত লবণ, চিনি ও অতি-প্রক্রিয়াজাত খাবার সীমিত রাখা ভালো।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+healthy+diet">▶️ ভিডিও দেখুন</a></div>
+<div class="card"><h3>💧 পানি ও ব্যক্তিগত পরিচ্ছন্নতা</h3><ul><li>নিরাপদ পানি পান করুন।</li><li>খাবারের আগে ও টয়লেট ব্যবহারের পরে সাবান দিয়ে হাত ধুয়ে নিন।</li><li>খাবার পরিষ্কারভাবে সংরক্ষণ ও প্রস্তুত করুন।</li></ul><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+handwashing">▶️ হাত ধোয়ার ভিডিও</a></div>
+<div class="card"><h3>😴 ঘুম ও শারীরিক সক্রিয়তা</h3><p>নিয়মিত ঘুমের রুটিন বজায় রাখুন এবং বয়স ও শারীরিক সক্ষমতা অনুযায়ী নিয়মিত শারীরিকভাবে সক্রিয় থাকুন।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+physical+activity+health">▶️ ভিডিও দেখুন</a></div>
+<div class="card"><h3>🚨 কখন চিকিৎসকের কাছে যাবেন?</h3><p>শ্বাসকষ্ট, অজ্ঞান হওয়া, তীব্র বুকব্যথা, খিঁচুনি, গুরুতর আঘাত বা অন্য কোনো জরুরি লক্ষণ দেখা দিলে দ্রুত জরুরি চিকিৎসা নিন। নতুন বা দীর্ঘস্থায়ী উপসর্গ থাকলেও চিকিৎসকের পরামর্শ নিন।</p></div>
+</section>
+<section id="child" class="panel">
+<h2 class="section-title">👶 শিশু স্বাস্থ্য</h2>
+<div class="card"><h3>🛁 শিশুকে কীভাবে গোসল করাবেন?</h3><ul><li>গোসলের আগে পানি ও প্রয়োজনীয় জিনিস হাতের কাছে রাখুন।</li><li>ছোট শিশুকে গোসলের সময় একা রাখবেন না।</li><li>পানি আরামদায়ক উষ্ণ রাখুন; খুব গরম পানি ব্যবহার করবেন না।</li><li>গোসল শেষে শিশুকে ভালোভাবে শুকিয়ে নিরাপদ পোশাক পরান।</li></ul><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=UNICEF+baby+bathing+newborn+care">▶️ গোসলের ভিডিও</a></div>
+<div class="card"><h3>🍼 শিশুকে কীভাবে খাওয়াবেন?</h3><p>জন্মের পর যত তাড়াতাড়ি সম্ভব বুকের দুধ শুরু করা এবং প্রথম ৬ মাস শুধু বুকের দুধ দেওয়ার পরামর্শ দেওয়া হয়। প্রায় ৬ মাস বয়সে উপযুক্ত পরিপূরক খাবার শুরু করে বুকের দুধ চালিয়ে যেতে হয়। শিশুর বয়স ও বিকাশ অনুযায়ী খাবারের ধরন ও পরিমাণ ঠিক করুন।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=UNICEF+infant+young+child+feeding">▶️ Feeding ভিডিও</a></div>
+<div class="card"><h3>🍌 ৬ মাসের পর কী খাওয়াবেন?</h3><ul><li>নরম, পুষ্টিকর ও বয়স উপযোগী খাবার দিন।</li><li>ধীরে ধীরে খাবারের বৈচিত্র্য ও পরিমাণ বাড়ান।</li><li>পরিষ্কার হাতে ও পরিষ্কার পাত্রে খাবার দিন।</li><li>শিশুর বয়স অনুযায়ী নিরাপদ খাবারের পরামর্শ স্বাস্থ্যকর্মীর কাছ থেকে নিন।</li></ul><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+complementary+feeding+6+months">▶️ পরিপূরক খাবারের ভিডিও</a></div>
+<div class="card"><h3>💉 টিকা</h3><p>শিশুর জাতীয় টিকাদান সূচি অনুযায়ী সময়মতো টিকা দেওয়া গুরুত্বপূর্ণ। টিকার কার্ড সংরক্ষণ করুন এবং কোনো ডোজ মিস হলে নিকটস্থ স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+childhood+immunization+vaccines">▶️ টিকা সম্পর্কে ভিডিও</a></div>
+<div class="card"><h3>☀️ শিশুকে রোদে নেওয়া</h3><p>শিশুকে সরাসরি তীব্র রোদে দীর্ঘ সময় রাখবেন না। গরম আবহাওয়ায় ছায়া, হালকা পোশাক ও পর্যাপ্ত তরলের দিকে খেয়াল রাখুন। ভিটামিন D বা সূর্যালোক নিয়ে শিশুর জন্য কী প্রয়োজন তা বয়স ও স্থানীয় নির্দেশনা অনুযায়ী স্বাস্থ্যকর্মীর সঙ্গে আলোচনা করুন।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=UNICEF+child+sun+safety">▶️ ভিডিও দেখুন</a></div>
+<div class="card"><h3>🩺 কখন শিশুকে ডাক্তার দেখাবেন?</h3><p>শিশু শ্বাস নিতে কষ্ট করলে, অস্বাভাবিকভাবে নিস্তেজ হয়ে গেলে, খেতে না পারলে, বারবার বমি/ডায়রিয়া হলে, খিঁচুনি হলে, জ্বর বা অন্য উপসর্গ নিয়ে চিন্তা হলে দ্রুত স্বাস্থ্যকর্মীর পরামর্শ নিন। নবজাতকের ক্ষেত্রে অসুস্থতার লক্ষণ দেখা দিলে দ্রুত চিকিৎসা নেওয়া বিশেষ গুরুত্বপূর্ণ।</p></div>
+</section>
+<section id="pregnancy" class="panel">
+<h2 class="section-title">🤰 গর্ভবতী ও প্রসুতি</h2>
+<div class="card"><h3>📅 গর্ভকালীন চেকআপ</h3><p>গর্ভাবস্থায় নিয়মিত antenatal check-up করা গুরুত্বপূর্ণ। স্বাস্থ্যকর্মী মায়ের ও শিশুর অবস্থা পর্যবেক্ষণ, প্রয়োজনীয় পরীক্ষা এবং পুষ্টি/ওষুধ সম্পর্কে পরামর্শ দিতে পারেন।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+antenatal+care+pregnancy">▶️ গর্ভকালীন যত্নের ভিডিও</a></div>
+<div class="card"><h3>🥗 পুষ্টি ও বিশ্রাম</h3><p>বৈচিত্র্যময় পুষ্টিকর খাবার, পর্যাপ্ত বিশ্রাম এবং চিকিৎসকের পরামর্শ অনুযায়ী প্রয়োজনীয় supplement গ্রহণ করুন। নিজের মতো করে ওষুধ শুরু করবেন না।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+pregnancy+nutrition">▶️ ভিডিও দেখুন</a></div>
+<div class="card"><h3>🚨 বিপদের লক্ষণ</h3><p>গর্ভাবস্থায় অতিরিক্ত রক্তপাত, তীব্র পেটব্যথা, তীব্র মাথাব্যথা/দৃষ্টির সমস্যা, খিঁচুনি, শ্বাসকষ্ট বা অন্য গুরুতর লক্ষণ হলে দ্রুত জরুরি চিকিৎসা নিন।</p></div>
+<div class="card"><h3>👩‍🍼 প্রসবের পর মায়ের যত্ন</h3><p>প্রসবের পর মায়ের বিশ্রাম, পুষ্টি, পরিচ্ছন্নতা, মানসিক সুস্থতা এবং follow-up গুরুত্বপূর্ণ। অস্বাভাবিক রক্তপাত, জ্বর, তীব্র ব্যথা বা অন্য গুরুতর সমস্যা হলে দ্রুত চিকিৎসকের সঙ্গে যোগাযোগ করুন।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+postnatal+care+mother">▶️ প্রসব-পরবর্তী যত্নের ভিডিও</a></div>
+</section>
+<section id="autism" class="panel">
+<h2 class="section-title">🧩 অটিজম ও প্রতিবন্ধি</h2>
+<div class="card"><h3>🧠 অটিজম কী?</h3><p>অটিজম একটি neurodevelopmental condition। মানুষের যোগাযোগ, সামাজিক interaction, আচরণ বা আগ্রহের ধরনে ভিন্নতা দেখা যেতে পারে। প্রতিটি শিশুর বৈশিষ্ট্য ও প্রয়োজন আলাদা।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=WHO+autism+children">▶️ সচেতনতামূলক ভিডিও</a></div>
+<div class="card"><h3>🔎 কখন মূল্যায়নের কথা ভাববেন?</h3><p>শিশুর ভাষা, যোগাযোগ, সামাজিক interaction বা বিকাশ নিয়ে উদ্বেগ থাকলে অপেক্ষা না করে শিশুরোগ বিশেষজ্ঞ বা উপযুক্ত developmental professional-এর সঙ্গে কথা বলুন। প্রয়োজন হলে assessment ও early support-এর ব্যবস্থা করা যায়।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=UNICEF+early+childhood+development+disability">▶️ ভিডিও দেখুন</a></div>
+<div class="card"><h3>❤️ পরিবারের করণীয়</h3><ul><li>শিশুর শক্তি ও সক্ষমতাকে গুরুত্ব দিন।</li><li>নিয়মিত routine ও সহজ যোগাযোগের পরিবেশ তৈরি করুন।</li><li>প্রয়োজন অনুযায়ী speech, developmental বা অন্য support নিন।</li><li>শিশুকে অন্যদের সঙ্গে সম্মানজনক ও অন্তর্ভুক্তিমূলক পরিবেশে রাখুন।</li></ul></div>
+<div class="card"><h3>♿ প্রতিবন্ধিতা ও অন্তর্ভুক্তি</h3><p>প্রতিবন্ধিতা থাকা মানে একজন মানুষের সম্ভাবনা শেষ হয়ে যাওয়া নয়। শিক্ষা, স্বাস্থ্যসেবা, পরিবার ও সমাজে সম্মানজনক অংশগ্রহণের সুযোগ নিশ্চিত করা গুরুত্বপূর্ণ।</p><a class="video" target="_blank" href="https://www.youtube.com/results?search_query=UNICEF+children+with+disabilities+inclusion">▶️ Inclusion ভিডিও</a></div>
+<div class="note">⚠️ এই পেজটি স্বাস্থ্যসচেতনতার তথ্য দেয়; এটি diagnosis বা ব্যক্তিগত চিকিৎসার বিকল্প নয়।</div>
+</section>
+</div>
+<footer><strong>🛡️ MediSafe BD — স্বাস্থ্য সুরক্ষা সিস্টেম</strong><small>স্বাস্থ্য তথ্য • শিশু স্বাস্থ্য • গর্ভবতী ও প্রসুতি • অটিজম ও প্রতিবন্ধি</small></footer>
+<script>
+function showTab(id,button){
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ button.classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
 }
+</script>
+</body>
+</html>
