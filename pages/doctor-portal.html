@@ -1,13 +1,335 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Doctor Portal - MediSafe BD</title><link rel="stylesheet" href="../assets/style.css"></head><body class="portal-shell">
-<header class="portal-top"><div class="brand">🛡️ MediSafe BD — Doctor Portal</div><button class="btn red" onclick="doctorLogout()">Logout</button></header>
-<div class="portal-layout"><aside class="side"><h3>Doctor Menu</h3>
-<button onclick="doctorSection('dashboard')">Dashboard</button><button onclick="doctorSection('search')">Patient Search</button><button onclick="doctorSection('medical')">Medical History</button><button onclick="doctorSection('antibiotic')">Antibiotic History</button><button onclick="doctorSection('reports')">Test Reports</button><button onclick="doctorSection('problem')">Patient Health Problem</button><button onclick="doctorSection('prescription')">Manage Prescription</button></aside>
-<main class="main"><h1>👨‍⚕️ Doctor Dashboard</h1>
-<div id="dashboard" class="section"><div class="grid"><div class="stat">Patients<strong id="dPatientCount">1</strong></div><div class="stat">Medical Records<strong id="dMedicalCount">0</strong></div><div class="stat">Antibiotic Records<strong id="dAbxCount">0</strong></div><div class="stat">Safety Alerts<strong id="dAlertCount">0</strong></div></div><div class="alert">Patient search করে complete patient history review করার পর prescription তৈরি করুন।</div></div>
-<div id="search" class="section hidden"><h2>🔎 Patient Search</h2><div class="search-row"><input id="patientSearch" placeholder="Patient ID or Name"><button class="btn" onclick="searchPatient()">Search</button></div><div id="searchResult" style="margin-top:15px"></div></div>
-<div id="medical" class="section hidden"><h2>🩺 Complete Patient Medical History</h2><div id="doctorPatientInfo"></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Condition</th><th>Doctor</th><th>Notes</th></tr></thead><tbody id="dMedicalBody"></tbody></table></div><h3 style="margin-top:18px">Add Medical Record</h3><div class="form-grid"><div class="field"><label>Date</label><input id="mDate" type="date"></div><div class="field"><label>Condition</label><input id="mCondition"></div><div class="field full"><label>Notes</label><textarea id="mNotes"></textarea></div></div><button class="btn" onclick="addMedicalRecord()">Add Medical Record</button></div>
-<div id="antibiotic" class="section hidden"><h2>💊 Antibiotic History</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Medicine</th><th>Reason</th><th>Course</th><th>Status</th></tr></thead><tbody id="dAbxBody"></tbody></table></div></div>
-<div id="reports" class="section hidden"><h2>📄 Test Reports</h2><div id="doctorReports"></div></div>
-<div id="problem" class="section hidden"><h2>📝 Patient Health Problem</h2><div id="doctorProblem" class="mini-card"></div></div>
-<div id="prescription" class="section hidden"><h2>💊 Manage Prescription</h2><div class="form-grid"><div class="field"><label>Medicine</label><input id="rxMedicine"></div><div class="field"><label>Dose / Timing</label><input id="rxDose"></div><div class="field full"><label>Instructions</label><textarea id="rxInstruction"></textarea></div><div class="field"><label><input type="checkbox" id="isAntibiotic"> Antibiotic</label></div><div class="field"><label>Reason / Body Context</label><input id="rxReason"></div></div><button class="btn" onclick="savePrescription()">Save Prescription</button><div id="safetyResult"></div></div>
-</main></div><script src="../js/app.js"></script></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor Portal - MediSafe BD</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        /* Doctor portal additions only; existing site CSS is retained. */
+        .doctor-profile {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+        }
+        .doctor-profile .mini-card { margin: 0; }
+        .doctor-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .doctor-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .doctor-form .field { min-width: 0; }
+        .doctor-form .full { grid-column: 1 / -1; }
+        .doctor-form input,
+        .doctor-form textarea,
+        .doctor-form select {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .doctor-form textarea { min-height: 85px; }
+        .record-note {
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 8px;
+            background: var(--card-bg, #f4f7fb);
+        }
+        .record-card {
+            border: 1px solid #dce3eb;
+            border-radius: 10px;
+            padding: 14px;
+            margin: 12px 0;
+            overflow-wrap: anywhere;
+        }
+        .record-card h3 { margin-top: 0; }
+        .readonly-label {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 5px;
+            background: #edf2f7;
+            font-size: 12px;
+        }
+        .prescription-paper {
+            background: #fff;
+            color: #111;
+            border: 1px solid #cbd5e1;
+            padding: 28px;
+            margin: 18px 0;
+            min-height: 360px;
+        }
+        .prescription-paper .rx-line {
+            border-bottom: 1px solid #bbb;
+            min-height: 26px;
+            margin: 8px 0;
+            overflow-wrap: anywhere;
+        }
+        .prescription-paper h2 { text-align: center; }
+        .hidden { display: none !important; }
+        @media (max-width: 600px) {
+            .doctor-form { grid-template-columns: 1fr; }
+            .doctor-form .full { grid-column: auto; }
+            .prescription-paper { padding: 16px; }
+        }
+        @media print {
+            body * { visibility: hidden !important; }
+            #prescriptionPaper, #prescriptionPaper * {
+                visibility: visible !important;
+            }
+            #prescriptionPaper {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-sizing: border-box;
+                border: none;
+                margin: 0;
+                padding: 20px;
+            }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="portal-shell">
+
+<header class="portal-top">
+    <div class="brand">🛡️ MediSafe BD — Doctor Portal</div>
+    <button class="btn red no-print" onclick="doctorLogout()">Logout</button>
+</header>
+
+<div class="portal-layout">
+    <aside class="side no-print">
+        <h3>Doctor Menu</h3>
+        <button onclick="doctorSection('dashboard')">Dashboard</button>
+        <button onclick="doctorSection('profile')">Doctor Information</button>
+        <button onclick="doctorSection('prescription')">Prescription Pad</button>
+        <button onclick="doctorSection('search')">Visit Patient ID</button>
+        <button onclick="doctorSection('medical')">Medical History</button>
+        <button onclick="doctorSection('antibiotic')">Antibiotic History</button>
+        <button onclick="doctorSection('reports')">Test Reports</button>
+        <button onclick="doctorSection('problem')">Patient Health Problem</button>
+    </aside>
+
+    <main class="main">
+        <h1>👨‍⚕️ Doctor Dashboard</h1>
+
+        <div id="portalMessage" class="alert hidden"></div>
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="section">
+            <div class="grid">
+                <div class="stat">Registered Patients<strong id="dPatientCount">0</strong></div>
+                <div class="stat">Medical Records<strong id="dMedicalCount">0</strong></div>
+                <div class="stat">Antibiotic Records<strong id="dAbxCount">0</strong></div>
+                <div class="stat">Safety Alerts<strong id="dAlertCount">0</strong></div>
+            </div>
+            <div class="alert">
+                রোগীর ID দিয়ে খুঁজে তার সম্পূর্ণ history review করার পর
+                চিকিৎসা ও prescription-এর সিদ্ধান্ত নিন।
+            </div>
+            <div id="dashboardAlerts"></div>
+        </section>
+
+        <!-- Doctor information -->
+        <section id="profile" class="section hidden">
+            <h2>👨‍⚕️ Doctor Information</h2>
+            <div id="doctorProfile" class="doctor-profile"></div>
+            <div class="record-note">
+                Demo version: ডাক্তারের তথ্য বর্তমানে local demo database থেকে আসে।
+            </div>
+        </section>
+
+        <!-- Prescription Pad -->
+        <section id="prescription" class="section hidden">
+            <h2>📝 Prescription Pad</h2>
+            <p>প্রেসক্রিপশন লিখুন এবং নিচের Print Prescription বাটন ব্যবহার করুন।</p>
+
+            <form id="prescriptionForm" onsubmit="event.preventDefault();previewPrescription();">
+                <div class="doctor-form">
+                    <div class="field">
+                        <label for="rxPatientId">Patient ID</label>
+                        <input id="rxPatientId" placeholder="MSBD-P-10001" required>
+                    </div>
+                    <div class="field">
+                        <label for="rxPatientName">Patient Name</label>
+                        <input id="rxPatientName" required>
+                    </div>
+                    <div class="field">
+                        <label for="rxAge">Age</label>
+                        <input id="rxAge" type="number" min="0">
+                    </div>
+                    <div class="field">
+                        <label for="rxDate">Date</label>
+                        <input id="rxDate" type="date" required>
+                    </div>
+                    <div class="field full">
+                        <label for="rxDiagnosis">Diagnosis / Clinical Notes</label>
+                        <textarea id="rxDiagnosis"></textarea>
+                    </div>
+                    <div class="field full">
+                        <label for="rxMedicines">Medicines, doses and timing</label>
+                        <textarea id="rxMedicines" required
+                            placeholder="Medicine name — dose — timing — duration"></textarea>
+                    </div>
+                    <div class="field full">
+                        <label for="rxAdvice">Advice / Instructions</label>
+                        <textarea id="rxAdvice"></textarea>
+                    </div>
+                    <div class="field full">
+                        <label for="rxFollowup">Follow-up</label>
+                        <input id="rxFollowup" placeholder="Follow-up instructions">
+                    </div>
+                </div>
+
+                <div class="doctor-actions no-print">
+                    <button type="button" class="btn" onclick="loadPrescriptionPatient()">
+                        Load Selected Patient
+                    </button>
+                    <button type="submit" class="btn">Preview Prescription</button>
+                    <button type="button" class="btn" onclick="printPrescription()">
+                        Print Prescription
+                    </button>
+                    <button type="button" class="btn" onclick="savePrescription()">
+                        Save Prescription
+                    </button>
+                </div>
+            </form>
+
+            <div id="prescriptionPaper" class="prescription-paper">
+                <h2>MediSafe BD</h2>
+                <p style="text-align:center">Doctor's Prescription</p>
+                <hr>
+                <p><b>Doctor:</b> <span id="paperDoctor"></span></p>
+                <p><b>BMDC:</b> <span id="paperBMDC"></span></p>
+                <hr>
+                <p><b>Patient:</b> <span id="paperPatient"></span></p>
+                <p><b>Patient ID:</b> <span id="paperPatientId"></span></p>
+                <p><b>Age:</b> <span id="paperAge"></span>
+                   &nbsp; <b>Date:</b> <span id="paperDate"></span></p>
+                <p><b>Diagnosis / Notes:</b></p>
+                <div id="paperDiagnosis" class="rx-line"></div>
+                <h3>℞ Medicines</h3>
+                <div id="paperMedicines" class="rx-line"></div>
+                <p><b>Advice:</b></p>
+                <div id="paperAdvice" class="rx-line"></div>
+                <p><b>Follow-up:</b> <span id="paperFollowup"></span></p>
+                <br><br>
+                <p style="text-align:right">
+                    ______________________<br>
+                    Doctor's Signature
+                </p>
+            </div>
+        </section>
+
+        <!-- Patient ID Search -->
+        <section id="search" class="section hidden">
+            <h2>🔎 Visit Patient ID</h2>
+            <div class="search-row">
+                <input id="patientSearch" placeholder="Enter exact Patient ID">
+                <button class="btn" onclick="searchPatient()">Visit Patient</button>
+            </div>
+            <div id="searchResult" style="margin-top:15px"></div>
+        </section>
+
+        <!-- Medical History -->
+        <section id="medical" class="section hidden">
+            <h2>🩺 Complete Medical History</h2>
+            <div id="doctorPatientInfo"></div>
+            <div id="medicalHistoryList"></div>
+
+            <h3>Add New Medical Record</h3>
+            <div class="record-note">
+                আগের রেকর্ড অপরিবর্তিত থাকবে। নতুন রেকর্ড আলাদা entry হিসেবে যোগ হবে।
+            </div>
+            <form id="medicalForm" onsubmit="event.preventDefault();addMedicalRecord();">
+                <div class="doctor-form">
+                    <div class="field">
+                        <label for="mDate">Date</label>
+                        <input id="mDate" type="date" required>
+                    </div>
+                    <div class="field">
+                        <label for="mCondition">Condition / Diagnosis</label>
+                        <input id="mCondition" required>
+                    </div>
+                    <div class="field full">
+                        <label for="mNotes">Doctor's Notes</label>
+                        <textarea id="mNotes"></textarea>
+                    </div>
+                </div>
+                <button class="btn" type="submit">Add New Medical Record</button>
+            </form>
+        </section>
+
+        <!-- Antibiotic History -->
+        <section id="antibiotic" class="section hidden">
+            <h2>💊 Antibiotic History</h2>
+            <div id="antibioticPatientInfo"></div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th><th>Medicine</th><th>Reason</th>
+                            <th>Course</th><th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dAbxBody"></tbody>
+                </table>
+            </div>
+
+            <h3>Add New Antibiotic Record</h3>
+            <form id="antibioticForm" onsubmit="event.preventDefault();addAntibioticRecord();">
+                <div class="doctor-form">
+                    <div class="field">
+                        <label for="abxDate">Date</label>
+                        <input id="abxDate" type="date" required>
+                    </div>
+                    <div class="field">
+                        <label for="abxMedicine">Medicine</label>
+                        <input id="abxMedicine" required>
+                    </div>
+                    <div class="field">
+                        <label for="abxReason">Reason / Diagnosis</label>
+                        <input id="abxReason" required>
+                    </div>
+                    <div class="field">
+                        <label for="abxCourse">Prescribed Course</label>
+                        <input id="abxCourse" required placeholder="As written in prescription">
+                    </div>
+                    <div class="field">
+                        <label for="abxStatus">Status</label>
+                        <select id="abxStatus">
+                            <option value="Active">Active</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Discontinued by clinician">Discontinued by clinician</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn" type="submit">Add Antibiotic Record</button>
+            </form>
+        </section>
+
+        <!-- Reports -->
+        <section id="reports" class="section hidden">
+            <h2>📄 Test Reports</h2>
+            <div id="doctorReports"></div>
+        </section>
+
+        <!-- Patient problem -->
+        <section id="problem" class="section hidden">
+            <h2>📝 Patient Health Problem</h2>
+            <div id="doctorProblem" class="mini-card"></div>
+        </section>
+    </main>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>
