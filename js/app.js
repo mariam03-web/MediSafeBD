@@ -270,6 +270,7 @@ function patientLoginSubmit(event) {
 }
 
 
+
 function doctorLoginSubmit(e) {
     e.preventDefault();
 
@@ -277,9 +278,26 @@ function doctorLoginSubmit(e) {
     const bmdc = document.getElementById("doctorBMDC").value.trim();
 
     if (!name || !bmdc) {
-        alert("Doctor Name and ID must be entered.");
+        alert("Doctor Name and ID লিখুন।");
         return;
     }
+
+    sessionStorage.setItem(
+        "medisafe_doctor_session",
+        JSON.stringify({
+            name: name,
+            bmdc: bmdc
+        })
+    );
+
+    const path = window.location.pathname;
+
+    if (path.includes("/pages/")) {
+        window.location.href = "doctor-portal.html";
+    } else {
+        window.location.href = "pages/doctor-portal.html";
+    }
+}
 
     sessionStorage.setItem(
         "medisafe_doctor_session",
