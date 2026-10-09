@@ -269,31 +269,28 @@ function patientLoginSubmit(event) {
         : "pages/patient-portal.html";
 }
 
-function doctorLoginSubmit(event) {
-    event.preventDefault();
 
-    const db = getDB();
-    const name = el("doctorName")?.value.trim() || "";
-    const bmdc = el("doctorBMDC")?.value.trim() || "";
-    const password = el("doctorPassword")?.value || "";
+function doctorLoginSubmit(e) {
+    e.preventDefault();
 
-    // Match all three fields against a registered demo doctor.
-    const doctor = db.doctors.find(d =>
-        d.name.toLowerCase() === name.toLowerCase() &&
-        d.bmdc === bmdc &&
-        d.password === password
-    );
+    const name = document.getElementById("doctorName").value.trim();
+    const bmdc = document.getElementById("doctorBMDC").value.trim();
 
-    if (!doctor) {
-        alert(
-            "Doctor login failed. Registered demo credentials ব্যবহার করুন।\n\n" +
-            "Name: Dr. Rahman\n" +
-            "BMDC: BMDC-1001\n" +
-            "Password: demo123"
-        );
+    if (!name || !bmdc) {
+        alert("Doctor Name and ID must be entered.");
         return;
     }
 
+    sessionStorage.setItem(
+        "medisafe_doctor_session",
+        JSON.stringify({
+            name: name,
+            bmdc: bmdc
+        })
+    );
+
+    window.location.href = "doctor-portal.html";
+}
     sessionStorage.setItem(
         DOCTOR_SESSION,
         JSON.stringify({
